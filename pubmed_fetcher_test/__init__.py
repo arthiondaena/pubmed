@@ -65,7 +65,7 @@ def fetch_paper_details(query_key: str, web_env: str, batch_size: int = 10) -> L
     return papers
 
 def check_academic(affiliation: str) -> bool:
-    """Determine if an affiliation is academic using cosine similarity."""
+    """Determine if an affiliation is academic using set intersection."""
     academic_keywords = ["school", "university", "college", "institute", "research", "lab"]
 
     # Remove punctuations.
@@ -74,12 +74,7 @@ def check_academic(affiliation: str) -> bool:
     # Convert string to list.
     affiliation = affiliation.lower().split()
 
-    academic_keywords = set(academic_keywords)
-    affiliation = set(affiliation)
-
-    # print(academic_keywords.intersection(affiliation))
-
-    return len(academic_keywords.intersection(affiliation)) > 0
+    return any(keyword in academic_keywords for keyword in affiliation)
 
 
 def process_papers(papers: List[Dict]) -> pd.DataFrame:
@@ -90,7 +85,6 @@ def process_papers(papers: List[Dict]) -> pd.DataFrame:
         affiliations = []
         for author, affiliation in zip(paper['Authors'], paper['Affiliations']):
             is_academic = check_academic(affiliation)
-            # print(author, affiliation, is_academic)
             if not is_academic:
                 non_academic_authors.append(author)
                 affiliations.append(affiliation)
@@ -154,14 +148,15 @@ def main():
     except Exception as e:
         logging.error("An error occurred while processing the PubMed query.", exc_info=True)
 
-def fetch(query, file_path=None, debug=False):
+def fetch(query: str, max_results: int = 100, file_path: str = None, debug: bool = False) -> pd.DataFrame:
+    """Fetch research papers from PubMed based on query."""
     logging_level = logging.DEBUG if debug else logging.INFO
     logging.basicConfig(level=logging_level, format='%(asctime)s - %(levelname)s - %(message)s')
 
     logging.info("Starting PubMed query...")
     try:
         # Step 1: Fetch PubMed IDs
-        paper_ids, query_key, web_env = fetch_paper_ids(query)
+        paper_ids, query_key, web_env = fetch_paper_ids(query, max_results)
         logging.info(f"Fetched {len(paper_ids)} paper IDs.")
 
         # Step 2: Fetch paper details
@@ -176,8 +171,9 @@ def fetch(query, file_path=None, debug=False):
         if file_path:
             processed_df.to_csv(file_path, index=False)
             logging.info(f"Results saved to {file_path}")
-        else:
-            print(processed_df.to_string(index=False))
+
+        return processed_df
 
     except Exception as e:
         logging.error("An error occurred while processing the PubMed query.", exc_info=True)
+        return pd.DataFrame([])
