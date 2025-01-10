@@ -53,3 +53,6 @@ pip install -i https://test.pypi.org/simple/ pubmed-fetcher-test==0.1.1
     ```bash
     poetry shell
     ```
+
+## Chat-gpt transcript
+Used [chat-gpt](https://chatgpt.com/c/67811490-a008-8004-b637-3f4aac5a5308) to implement command line feature and a reference on how to publish code to test-pypi.
