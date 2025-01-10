@@ -15,10 +15,16 @@ A Python program to fetch research papers from PubMed, filter authors based on t
 
 ## Installation
 
+### test-pypi
+```bash
+pip install -i https://test.pypi.org/simple/ pubmed-fetcher-test==0.1.1
+```
+
+### Git repository
 1. Clone the repository:
     ```bash
-    git clone <repository-url>
-    cd <repository-folder>
+    git clone https://github.com/arthiondaena/pubmed.git
+    cd pubmed
     ```
 
 2. Install dependencies using [Poetry](https://python-poetry.org/):
