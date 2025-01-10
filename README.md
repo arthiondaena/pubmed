@@ -13,6 +13,23 @@ A Python program to fetch research papers from PubMed, filter authors based on t
    - `-d` or `--debug`: Enable debug logging.
    - `-h` or `--help`: Display usage instructions.
 
+## Usage
+
+### Using command line arguments:
+To execute the program, use the following command:
+
+```bash
+pubmed "your query here" [-f output.csv] [-d]
+```
+
+### Using module:
+```python
+from pubmed_fetcher_test import fetch
+
+# If file_path not provided, the results are displayed in terminal.
+fetch(query="cancer", file_path="results.csv", debug=True)
+```
+
 ## Installation
 
 ### test-pypi
@@ -36,10 +53,3 @@ pip install -i https://test.pypi.org/simple/ pubmed-fetcher-test==0.1.1
     ```bash
     poetry shell
     ```
-
-## Usage
-
-To execute the program, use the following command:
-
-```bash
-pubmed "your query here" [-f output.csv] [-d]
