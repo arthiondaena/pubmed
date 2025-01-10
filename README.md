@@ -27,14 +27,14 @@ pubmed "your query here" [-f output.csv] [-d]
 from pubmed_fetcher_test import fetch
 
 # If file_path not provided, the results are displayed in terminal.
-fetch(query="cancer", file_path="results.csv", debug=True)
+fetch(query="cancer", max_results=50, file_path="results.csv", debug=True)
 ```
 
 ## Installation
 
 ### test-pypi
 ```bash
-pip install -i https://test.pypi.org/simple/ pubmed-fetcher-test==0.1.1
+pip install --extra-index-url https://test.pypi.org/simple/ pubmed-fetcher-test==0.1.1
 ```
 
 ### Git repository
